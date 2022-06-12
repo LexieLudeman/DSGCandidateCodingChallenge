@@ -3,12 +3,14 @@ package com.lludeman.dsgcandidatecodingchallenge.ui
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.RecyclerView
 import com.lludeman.dsgcandidatecodingchallenge.R
 import com.lludeman.dsgcandidatecodingchallenge.viewmodel.MainViewModel
 import com.lludeman.dsgcandidatecodingchallenge.common.Event
+import com.squareup.picasso.Picasso
 
 class EventAdapter(
     private var allEvents: List<Event>,
@@ -16,16 +18,18 @@ class EventAdapter(
     lifecycleOwner: LifecycleOwner
 ) : RecyclerView.Adapter<EventAdapter.EventViewHolder>() {
 
+    private val picasso = Picasso.get()
+
     inner class EventViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         private val titleText: TextView = view.findViewById(R.id.title)
         private val locationText: TextView = view.findViewById(R.id.location)
-        private val imageText: TextView = view.findViewById(R.id.image)
+        private val imageView: ImageView = view.findViewById(R.id.image)
         private val dateText: TextView = view.findViewById(R.id.time)
 
         fun bind(event : Event) {
             titleText.text = event.title
             locationText.text = event.venue.displayLocation
-            imageText.text = event.performers[0].image
+            picasso.load(event.performers[0].image).into(imageView)
             if (event.isDatetimeTbd) {
                 dateText.text = "TBD"
             } else {
