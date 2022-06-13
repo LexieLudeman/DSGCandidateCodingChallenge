@@ -28,7 +28,6 @@ class DetailsActivity : AppCompatActivity() {
     private lateinit var imageView: ImageView
     private lateinit var dateText: TextView
     private lateinit var favoriteButton: ToggleButton
-    private lateinit var adapter: EventAdapter
     private val eventKey = "EVENT_KEY"
     private lateinit var event: Event
     private val picasso = Picasso.get()
@@ -113,20 +112,20 @@ class DetailsActivity : AppCompatActivity() {
         return super.onOptionsItemSelected(item)
     }
 
-    suspend fun checkIfFavorite(eventId: Int) : Boolean{
+    private suspend fun checkIfFavorite(eventId: Int) : Boolean{
         if (eventsDao.checkIfEventFavorite(eventId) > 0) {
             return true
         }
         return false
     }
 
-    suspend fun addFavorite(eventId: Int) {
-        var eventEntity = EventEntity(eventId)
+    private suspend fun addFavorite(eventId: Int) {
+        val eventEntity = EventEntity(eventId)
         eventsDao.insertEvent(eventEntity)
     }
 
-    suspend fun removeFavorite(eventId: Int) {
-        var eventEntity = EventEntity(eventId)
+    private suspend fun removeFavorite(eventId: Int) {
+        val eventEntity = EventEntity(eventId)
         eventsDao.deleteEvent(eventEntity)
     }
 
@@ -138,13 +137,8 @@ class DetailsActivity : AppCompatActivity() {
             val formatter = SimpleDateFormat("EEE, MMM dd yyyy h:mm a", Locale.ENGLISH)
             (formatter.format(date))
         } catch (e: Exception){
-            Log.d("Lexie",e.toString())
+            Log.d("Exception",e.toString())
             dateStr
         }
     }
-
-    private fun setFavoriteState(event: Event) {
-
-    }
-
 }

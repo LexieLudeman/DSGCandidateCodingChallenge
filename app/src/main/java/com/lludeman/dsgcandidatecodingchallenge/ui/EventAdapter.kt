@@ -1,43 +1,32 @@
 package com.lludeman.dsgcandidatecodingchallenge.ui
 
 import android.content.Intent
-import android.os.Build
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.annotation.RequiresApi
-import androidx.core.content.res.ResourcesCompat
-import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.RecyclerView
 import com.lludeman.dsgcandidatecodingchallenge.R
 import com.lludeman.dsgcandidatecodingchallenge.common.Event
 import com.lludeman.dsgcandidatecodingchallenge.data.database.EventsDao
-import com.lludeman.dsgcandidatecodingchallenge.viewmodel.MainViewModel
 import com.squareup.picasso.Picasso
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.text.SimpleDateFormat
-import java.time.format.DateTimeFormatter
 import java.util.*
 
 
 class EventAdapter(
     private var allEvents: List<Event>,
-    mainViewModel: MainViewModel,
-    lifecycleOwner: LifecycleOwner,
     private val eventsDao: EventsDao
 ) : RecyclerView.Adapter<EventAdapter.EventViewHolder>() {
 
     private val eventKey = "EVENT_KEY"
     private val picasso = Picasso.get()
-    @RequiresApi(Build.VERSION_CODES.O)
-    private val formatter = SimpleDateFormat("EEE, MMM dd yyyy h:mm a")
-//    private val formatter = DateTimeFormatter.ofPattern("EEE, MMM dd yyyy h:mm a")
 
     inner class EventViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         private val titleText: TextView = view.findViewById(R.id.title)
@@ -79,8 +68,8 @@ class EventAdapter(
     override fun onBindViewHolder(holder: EventViewHolder, position: Int) {
         holder.bind(event = allEvents[position])
         holder.itemView.setOnClickListener {
-            var touchedEvent = allEvents[position]
-            var intent = Intent(it.context, DetailsActivity::class.java)
+            val touchedEvent = allEvents[position]
+            val intent = Intent(it.context, DetailsActivity::class.java)
             intent.putExtra(eventKey, touchedEvent)
             it.context.startActivity(intent)
         }
@@ -100,7 +89,7 @@ class EventAdapter(
             val formatter = SimpleDateFormat("EEE, MMM dd yyyy h:mm a", Locale.ENGLISH)
             (formatter.format(date))
         } catch (e: Exception){
-            Log.d("Lexie",e.toString())
+            Log.d("Exception",e.toString())
             dateStr
         }
     }

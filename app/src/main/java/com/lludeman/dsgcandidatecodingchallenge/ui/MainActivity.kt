@@ -1,7 +1,6 @@
 package com.lludeman.dsgcandidatecodingchallenge.ui
 
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -33,8 +32,6 @@ class MainActivity : AppCompatActivity() {
 
         adapter = EventAdapter(
             allEvents = emptyList(),
-            mainViewModel = mainViewModel,
-            lifecycleOwner = this,
             eventsDao = (applicationContext as CodingChallengeApplication).database.eventsDao()
         )
 
@@ -51,14 +48,12 @@ class MainActivity : AppCompatActivity() {
 
     private fun getEvents(search: String) {
         mainViewModel.getEventData(search)
-        val data = mainViewModel.eventData
-        Log.d("Lexie", "Data contains")
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
 
         menuInflater.inflate(R.menu.menu, menu)
-        var menuItem = menu.findItem(R.id.action_search)
+        val menuItem = menu.findItem(R.id.action_search)
         searchView = menuItem.actionView as androidx.appcompat.widget.SearchView
         searchView.queryHint = "Type here to search"
         val urlEnd = resources.getString(R.string.client_id)
