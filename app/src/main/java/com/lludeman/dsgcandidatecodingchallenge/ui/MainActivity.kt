@@ -2,6 +2,7 @@ package com.lludeman.dsgcandidatecodingchallenge.ui
 
 import android.os.Bundle
 import android.util.Log
+import android.widget.SearchView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -17,10 +18,12 @@ class MainActivity : AppCompatActivity() {
     private lateinit var mainViewModel: MainViewModel
     private lateinit var adapter: EventAdapter
     private lateinit var recyclerView: RecyclerView
+    private lateinit var searchView: SearchView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        searchView = findViewById(R.id.searchView)
         retrofit = RetrofitImpl
 
         mainViewModel =
@@ -42,11 +45,24 @@ class MainActivity : AppCompatActivity() {
             adapter.updateItems(events = events)
 
         }
-        getEvents()
+
+        val urlEnd = resources.getString(R.string.client_id)
+        getEvents(resources.getString(R.string.client_id))
+
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String): Boolean {
+                return false
+            }
+            override fun onQueryTextChange(newText: String): Boolean {
+                getEvents(urlEnd+newText)
+                return false
+            }
+        })
+
     }
 
-    private fun getEvents() {
-        mainViewModel.getEventData()
+    private fun getEvents(search: String) {
+        mainViewModel.getEventData(search)
         val data = mainViewModel.eventData
         Log.d("Lexie", "Data contains")
     }

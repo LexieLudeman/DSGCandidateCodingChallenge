@@ -2,8 +2,14 @@ package com.lludeman.dsgcandidatecodingchallenge.data
 
 import retrofit2.Response
 import retrofit2.http.GET
+import retrofit2.http.Url
 
 interface EventApiCall {
-    @GET("events?client_id=Mjc0MDE3ODh8MTY1NDk3MjQwNS4yNzE2ODEz")
-    suspend fun getEvents(): Response<EventResponse>
+    @GET()
+    suspend fun getEvents(@Url url: String): Response<EventResponse>
+
+    /*
+       @GET
+    public Call<ResponseBody> profilePicture(@Url String url);
+     */
 }

@@ -15,9 +15,9 @@ class MainViewModel (
     private val _eventData: MutableLiveData<List<Event>> = MutableLiveData()
     val eventData: LiveData<List<Event>> = _eventData
 
-    fun getEventData() {
+    fun getEventData(search: String) {
         viewModelScope.launch {
-            val events = eventRepository.getEvents()
+            val events = eventRepository.getEvents(search)
             _eventData.value = events
         }
     }

@@ -9,9 +9,9 @@ import retrofit2.Response
 class EventRepository(
     private val serviceImpl : RetrofitImpl
 ) {
-    suspend fun getEvents(): List<Event> {
+    suspend fun getEvents(search: String): List<Event> {
         var eventData : List<Event> = ArrayList()
-        val response: Response<EventResponse> = serviceImpl.instance.getEvents()
+        val response: Response<EventResponse> = serviceImpl.instance.getEvents(search)
         val body = response.body()
         Log.d("Lexie", "The response is ${response.body()}!!")
 

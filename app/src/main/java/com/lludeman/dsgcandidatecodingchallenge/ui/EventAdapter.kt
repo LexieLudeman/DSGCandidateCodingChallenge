@@ -52,7 +52,7 @@ class EventAdapter(
     override fun getItemCount() = allEvents.size
 
     fun updateItems(events: List<Event>) {
-        allEvents += events
+        allEvents = events
         notifyDataSetChanged()
     }
 }
