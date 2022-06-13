@@ -1,16 +1,20 @@
 package com.lludeman.dsgcandidatecodingchallenge.ui
 
+import android.content.Intent
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.content.ContextCompat.startActivity
 import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.RecyclerView
 import com.lludeman.dsgcandidatecodingchallenge.R
-import com.lludeman.dsgcandidatecodingchallenge.viewmodel.MainViewModel
 import com.lludeman.dsgcandidatecodingchallenge.common.Event
+import com.lludeman.dsgcandidatecodingchallenge.viewmodel.MainViewModel
 import com.squareup.picasso.Picasso
+
 
 class EventAdapter(
     private var allEvents: List<Event>,
@@ -18,6 +22,7 @@ class EventAdapter(
     lifecycleOwner: LifecycleOwner
 ) : RecyclerView.Adapter<EventAdapter.EventViewHolder>() {
 
+    private val eventKey = "EVENT_KEY"
     private val picasso = Picasso.get()
 
     inner class EventViewHolder(view: View) : RecyclerView.ViewHolder(view) {
@@ -47,6 +52,12 @@ class EventAdapter(
 
     override fun onBindViewHolder(holder: EventViewHolder, position: Int) {
         holder.bind(event = allEvents[position])
+        holder.itemView.setOnClickListener {
+            var touchedEvent = allEvents[position]
+            var intent = Intent(it.context, DetailsActivity::class.java)
+            intent.putExtra(eventKey, touchedEvent)
+            it.context.startActivity(intent)
+        }
     }
 
     override fun getItemCount() = allEvents.size
@@ -55,6 +66,7 @@ class EventAdapter(
         allEvents = events
         notifyDataSetChanged()
     }
+
 }
 
 

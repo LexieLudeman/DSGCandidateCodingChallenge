@@ -2,6 +2,7 @@ package com.lludeman.dsgcandidatecodingchallenge.common
 
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
+import java.io.Serializable
 
 data class Event(
     @SerializedName("id")
@@ -13,7 +14,7 @@ data class Event(
 
     @SerializedName("datetime_tbd")
     @Expose
-    var isDatetimeTbd : Boolean,
+    var isDatetimeTbd: Boolean,
 
     @SerializedName("performers")
     @Expose
@@ -21,10 +22,10 @@ data class Event(
 
     @SerializedName("datetime_local")
     @Expose
-    var datetimeLocal: String,
+    var datetimeLocal: String?,
 
     @SerializedName("title")
     @Expose
-    var title: String
+    var title: String?
 
-)
+) : Serializable
