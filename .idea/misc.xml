@@ -4,8 +4,10 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Users/Talin/Desktop/DSGCandidateCodingChallenge/app/src/main/res/drawable/card_bubble.xml" value="0.1" />
+        <entry key="..\:/Users/Talin/Desktop/DSGCandidateCodingChallenge/app/src/main/res/drawable/event_image.xml" value="0.142" />
+        <entry key="..\:/Users/Talin/Desktop/DSGCandidateCodingChallenge/app/src/main/res/drawable/test_shape.xml" value="0.1" />
         <entry key="..\:/Users/Talin/Desktop/DSGCandidateCodingChallenge/app/src/main/res/layout/activity_main.xml" value="0.1" />
-        <entry key="..\:/Users/Talin/Desktop/DSGCandidateCodingChallenge/app/src/main/res/layout/card_item.xml" value="0.15507692762747333" />
+        <entry key="..\:/Users/Talin/Desktop/DSGCandidateCodingChallenge/app/src/main/res/layout/card_item.xml" value="0.1" />
         <entry key="..\:/Users/Talin/Desktop/DSGCandidateCodingChallenge/app/src/main/res/layout/details_activity.xml" value="0.2436923148431724" />
         <entry key="..\:/Users/Talin/Desktop/DSGCandidateCodingChallenge/app/src/main/res/menu/menu.xml" value="0.1" />
       </map>

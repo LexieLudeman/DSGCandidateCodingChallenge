@@ -17,7 +17,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var mainViewModel: MainViewModel
     private lateinit var adapter: EventAdapter
     private lateinit var recyclerView: RecyclerView
-    private lateinit var searchView: androidx.appcompat.widget.SearchView
+    lateinit var searchView: androidx.appcompat.widget.SearchView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,6 +44,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         getEvents(resources.getString(R.string.client_id))
+
     }
 
     private fun getEvents(search: String) {

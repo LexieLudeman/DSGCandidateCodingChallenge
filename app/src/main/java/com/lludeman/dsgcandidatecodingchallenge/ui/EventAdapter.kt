@@ -38,7 +38,12 @@ class EventAdapter(
         fun bind(event : Event) {
             titleText.text = event.title
             locationText.text = event.venue.displayLocation
-            picasso.load(event.performers[0].image).into(imageView)
+            picasso
+                .load(event.performers[0].image)
+                .transform(RoundedTransformation(10,0))
+                .resize(225, 225)
+                .centerCrop()
+                .into(imageView)
 
             if (event.isDatetimeTbd) {
                 dateText.text = "TBD"
