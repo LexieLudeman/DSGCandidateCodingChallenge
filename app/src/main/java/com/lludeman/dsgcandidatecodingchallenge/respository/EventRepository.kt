@@ -1,9 +1,10 @@
 package com.lludeman.dsgcandidatecodingchallenge.respository
 
 import android.util.Log
-import com.lludeman.dsgcandidatecodingchallenge.data.EventResponse
-import com.lludeman.dsgcandidatecodingchallenge.data.RetrofitImpl
+import com.lludeman.dsgcandidatecodingchallenge.data.remote.EventResponse
+import com.lludeman.dsgcandidatecodingchallenge.data.remote.RetrofitImpl
 import com.lludeman.dsgcandidatecodingchallenge.common.Event
+import com.lludeman.dsgcandidatecodingchallenge.data.database.EventsDao
 import retrofit2.Response
 
 class EventRepository(

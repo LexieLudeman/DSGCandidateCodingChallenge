@@ -1,29 +1,38 @@
 package com.lludeman.dsgcandidatecodingchallenge.ui
 
 import android.content.Intent
+import android.os.Build
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.core.content.ContextCompat.startActivity
+import androidx.annotation.RequiresApi
 import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.RecyclerView
 import com.lludeman.dsgcandidatecodingchallenge.R
 import com.lludeman.dsgcandidatecodingchallenge.common.Event
+import com.lludeman.dsgcandidatecodingchallenge.data.database.EventsDao
 import com.lludeman.dsgcandidatecodingchallenge.viewmodel.MainViewModel
 import com.squareup.picasso.Picasso
+import java.text.SimpleDateFormat
+import java.time.format.DateTimeFormatter
+import java.util.*
 
 
 class EventAdapter(
     private var allEvents: List<Event>,
     mainViewModel: MainViewModel,
-    lifecycleOwner: LifecycleOwner
+    lifecycleOwner: LifecycleOwner,
+    private val eventsDao: EventsDao
 ) : RecyclerView.Adapter<EventAdapter.EventViewHolder>() {
 
     private val eventKey = "EVENT_KEY"
     private val picasso = Picasso.get()
+    @RequiresApi(Build.VERSION_CODES.O)
+    private val formatter = SimpleDateFormat("EEE, MMM dd yyyy h:mm a")
+//    private val formatter = DateTimeFormatter.ofPattern("EEE, MMM dd yyyy h:mm a")
 
     inner class EventViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         private val titleText: TextView = view.findViewById(R.id.title)
@@ -35,10 +44,11 @@ class EventAdapter(
             titleText.text = event.title
             locationText.text = event.venue.displayLocation
             picasso.load(event.performers[0].image).into(imageView)
+
             if (event.isDatetimeTbd) {
                 dateText.text = "TBD"
             } else {
-                dateText.text = event.datetimeLocal
+                dateText.text = getDate(event.datetimeLocal.toString())
             }
         }
     }
@@ -67,6 +77,17 @@ class EventAdapter(
         notifyDataSetChanged()
     }
 
+    fun getDate(dateStr: String) : String{
+        val currentFormat = SimpleDateFormat("yyyy-MM-DD HH:MM:SS")
+        return try {
+            val date = currentFormat.parse(dateStr.replace('T', ' '))
+            val formatter = SimpleDateFormat("EEE, MMM dd yyyy h:mm a", Locale.ENGLISH)
+            (formatter.format(date))
+        } catch (e: Exception){
+            Log.d("Lexie",e.toString())
+            dateStr
+        }
+    }
 }
 
 

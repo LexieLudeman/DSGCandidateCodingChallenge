@@ -1,4 +1,4 @@
-package com.lludeman.dsgcandidatecodingchallenge.data
+package com.lludeman.dsgcandidatecodingchallenge.data.remote
 
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
