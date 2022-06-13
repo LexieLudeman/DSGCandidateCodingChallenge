@@ -9,10 +9,11 @@
         android:icon="@mipmap/ic_launcher"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:label=""
+        android:label="DSG Candidate Coding Challenge"
         android:theme="@style/Theme.DSGCandidateCodingChallenge">
         <activity
             android:name=".ui.MainActivity"
+            android:label=""
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

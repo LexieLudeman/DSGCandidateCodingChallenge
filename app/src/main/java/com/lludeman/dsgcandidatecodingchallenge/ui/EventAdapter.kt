@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.annotation.RequiresApi
+import androidx.core.content.res.ResourcesCompat
 import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.RecyclerView
 import com.lludeman.dsgcandidatecodingchallenge.R
@@ -16,6 +17,10 @@ import com.lludeman.dsgcandidatecodingchallenge.common.Event
 import com.lludeman.dsgcandidatecodingchallenge.data.database.EventsDao
 import com.lludeman.dsgcandidatecodingchallenge.viewmodel.MainViewModel
 import com.squareup.picasso.Picasso
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.text.SimpleDateFormat
 import java.time.format.DateTimeFormatter
 import java.util.*
@@ -39,6 +44,7 @@ class EventAdapter(
         private val locationText: TextView = view.findViewById(R.id.location)
         private val imageView: ImageView = view.findViewById(R.id.image)
         private val dateText: TextView = view.findViewById(R.id.time)
+        private val favoriteView: ImageView = view.findViewById(R.id.card_favorite)
 
         fun bind(event : Event) {
             titleText.text = event.title
@@ -49,6 +55,16 @@ class EventAdapter(
                 dateText.text = "TBD"
             } else {
                 dateText.text = getDate(event.datetimeLocal.toString())
+            }
+
+            GlobalScope.launch(Dispatchers.Main) {
+                val favorited = withContext(Dispatchers.IO) { checkIfFavorite(event.id) }
+                if (favorited) {
+                    favoriteView.visibility = View.VISIBLE
+                }
+                else {
+                    favoriteView.visibility = View.INVISIBLE
+                }
             }
         }
     }
@@ -87,6 +103,13 @@ class EventAdapter(
             Log.d("Lexie",e.toString())
             dateStr
         }
+    }
+
+    suspend fun checkIfFavorite(eventId: Int) : Boolean{
+        if (eventsDao.checkIfEventFavorite(eventId) > 0) {
+            return true
+        }
+        return false
     }
 }
 

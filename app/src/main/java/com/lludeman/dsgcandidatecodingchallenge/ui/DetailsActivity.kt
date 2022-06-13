@@ -10,8 +10,13 @@ import androidx.core.content.res.ResourcesCompat
 import com.lludeman.dsgcandidatecodingchallenge.CodingChallengeApplication
 import com.lludeman.dsgcandidatecodingchallenge.R
 import com.lludeman.dsgcandidatecodingchallenge.common.Event
+import com.lludeman.dsgcandidatecodingchallenge.data.database.EventEntity
 import com.lludeman.dsgcandidatecodingchallenge.data.database.EventsDao
 import com.squareup.picasso.Picasso
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -42,8 +47,13 @@ class DetailsActivity : AppCompatActivity() {
         dateText = findViewById(R.id.detailsDate)
         favoriteButton = findViewById(R.id.favorite)
 
-        async
-//        val favoriteEvent = checkIfFavorite(event.id)
+        GlobalScope.launch(Dispatchers.Main) {
+            val favorited = withContext(Dispatchers.IO) { checkIfFavorite(event.id) }
+            if (favorited) {
+                favoriteButton.toggle()
+                favoriteButton.background = ResourcesCompat.getDrawable(resources, R.drawable.filledhearticon, null)
+            }
+        }
 
         titleText.text = event.title
         locationText.text = event.venue.displayLocation
@@ -69,11 +79,28 @@ class DetailsActivity : AppCompatActivity() {
         favoriteButton.setOnClickListener {
             if (favoriteButton.isChecked) {
                 favoriteButton.background = ResourcesCompat.getDrawable(resources, R.drawable.filledhearticon, null)
+
+                GlobalScope.launch(Dispatchers.Main) {
+                    val alreadyFavorited = withContext(Dispatchers.IO) { checkIfFavorite(event.id) }
+                    if (!alreadyFavorited) {
+                        withContext(Dispatchers.IO) {addFavorite(event.id)}
+                    }
+                }
             }
             else {
                 favoriteButton.background = ResourcesCompat.getDrawable(resources, R.drawable.hearticon, null)
+
+                GlobalScope.launch(Dispatchers.Main) {
+                    val existsInDb = withContext(Dispatchers.IO) { checkIfFavorite(event.id) }
+                    if (existsInDb) {
+                        withContext(Dispatchers.IO) {removeFavorite(event.id)}
+                    }
+                }
+
             }
         }
+
+
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -91,6 +118,16 @@ class DetailsActivity : AppCompatActivity() {
             return true
         }
         return false
+    }
+
+    suspend fun addFavorite(eventId: Int) {
+        var eventEntity = EventEntity(eventId)
+        eventsDao.insertEvent(eventEntity)
+    }
+
+    suspend fun removeFavorite(eventId: Int) {
+        var eventEntity = EventEntity(eventId)
+        eventsDao.deleteEvent(eventEntity)
     }
 
 
